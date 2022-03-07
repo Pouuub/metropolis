@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="assets/img/m-icon.png">
     <title>Metropolis</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <!-- font awesome -->
@@ -30,7 +31,7 @@
     <section id="log-section">
         <div id="log-box">
             <h2>S'identifier</h2>
-            <form action="#" id="log-form">
+            <form action="traitement.php" id="log-form">
                 <input type="text" id="email" name="email" placeholder="Email" maxlength="100" required>
                 <input type="text" id="password" name="password" placeholder="Mot de passe" maxlength="100" required>
                 <input type=submit id="submit-log"name="connexion" value="S'identifier">

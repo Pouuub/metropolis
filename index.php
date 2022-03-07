@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="assets/img/m-icon.png">
     <title>Metropolis</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <!-- font awesome -->
@@ -68,7 +69,7 @@
                     <img src="assets/img/albator.jpeg" alt="wallpaper inception">
                     <div class="caption left-align">
                     <h3>Le prix le plus attrayant</h3>
-                    <h4 class="light grey-text text-lighten-3">Seulement 4.55€ / mois.</h4>
+                    <h4 class="light grey-text text-lighten-3">Seulement 4.99€ / mois.</h4>
                     </div>
                 </li>
             </ul>
@@ -96,7 +97,7 @@
 
 <!-- parallax -->
 
-<div class="parallax-container parallax-home">
+<div class="parallax-container parallax-index">
       <div class="parallax">
           <img src="assets/img/inception.jpg" alt="inception" class="responsive-img">
       </div>

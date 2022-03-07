@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="assets/img/m-icon.png">
     <title>Metropolis</title>
     <!-- slick -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css">
@@ -53,7 +54,7 @@
     </header>
 
 <!-- caroussel -->
-    <section id="home-carousel">
+    <section id="home-carousel" data-aos="fade-right" data-aos-duration="500">
         <div class="carousel">
         <h2>Top 10 du moment</h2>
             <a class="carousel-item" href="pages.php"><img class="carousel-img" src="assets/img/dune-zendaya.jpeg"><p>Top 1</p></a>
@@ -69,11 +70,29 @@
         </div>
     </section>
 
+
 <!-- sliders -->
-<section id="slider-home-section">
+<section id="slider-home-section" data-aos="fade-left" data-aos-duration="500">
     <h2 class="home-genre">Genre 1</h2>
         <div class="home-slider">
-            <div class="img-slider-home div1"><a href="pages.php"><h6 class="desc-film">Dune</h6></a></div>
+            <a href="pages.php" class="img-slider-home div1"><div class="hover-desc"><h6>Dune</h6>
+                <div class="hover-desc-button">
+                    <i class="fas fa-play"></i>
+                    <i class="fas fa-plus"></i>
+                    <i class="fas fa-thumbs-up"></i>
+                    <i class="fas fa-thumbs-down"></i>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="hover-desc-info">
+                    <span class="hover-desc-date">2021</span>
+                    <span class="hover-desc-note">97%</span>
+                    <span class="hover-desc-age">+13</span>
+                    <span class="hover-desc-duree">2h 35m</span>
+                    <span>SF</span>
+                    <span>Aventure</span>
+                    <span></span>
+                </div>
+            </div></a>
             <div class="img-slider-home div2"></div>
             <div class="img-slider-home div3"></div>
             <div class="img-slider-home div4"></div>
@@ -87,6 +106,7 @@
             <div class="img-slider-home div12"></div>
         </div>
 
+<section id="slider-home-section" data-aos="fade-right" data-aos-duration="500">
     <h2 class="home-genre">Genre 2</h2>
         <div class="home-slider">
             <div class="img-slider-home div1"></div>
@@ -102,7 +122,9 @@
             <div class="img-slider-home div11"></div>
             <div class="img-slider-home div12"></div>
         </div>
+</section>
 
+<section id="slider-home-section" data-aos="fade-left" data-aos-duration="500">
     <h2 class="home-genre">Genre 3</h2>
         <div class="home-slider">
             <div class="img-slider-home div1"></div>
