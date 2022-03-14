@@ -29,12 +29,49 @@
     </header>
 
     <section id="log-section">
+        <?php
+            if(isset($_GET['login_err']))
+            {
+                $err = htmlspecialchars($_GET['login_err']);
+
+                switch($err)
+                {
+                    case 'password':
+                        ?>
+                        <div class="erreur-log" data-aos="zoom-in-up">
+                            <p>Erreur : mot de passe incorrect</p>
+                        </div>
+                    <?php
+                    break;
+                    case 'email':
+                        ?>
+                        <div class="erreur-log" data-aos="zoom-in-up">
+                            <p>Erreur : email incorrect</p>
+                        </div>
+                    <?php
+                    break;
+                    case 'already':
+                        ?>
+                        <div class="erreur-log" data-aos="zoom-in-up">
+                            <p>Erreur : compte non existant</p>
+                        </div>
+                    <?php
+                    break;
+                    case 'success':
+                        ?>
+                        <div class="success_sign" data-aos="zoom-in-up">
+                            Succès inscription réussie !
+                        </div>
+                    <?php
+                }
+            }
+        ?>
         <div id="log-box">
             <h2>S'identifier</h2>
-            <form action="traitement.php" id="log-form">
-                <input type="text" id="email" name="email" placeholder="Email" maxlength="100" required>
-                <input type="text" id="password" name="password" placeholder="Mot de passe" maxlength="100" required>
-                <input type=submit id="submit-log"name="connexion" value="S'identifier">
+            <form action="assets/bd/connexion.php" method="post" id="log-form">
+                <input type="email" id="email" name="email" placeholder="Email" maxlength="100" required>
+                <input type="password" id="password" name="password" placeholder="Mot de passe" maxlength="100" required>
+                <input type=submit id="submit-log" name="connexion" value="S'identifier">
                 <label><input type="checkbox"/><span id="checkbox-souvenir">Se souvenir de moi</span></label>
                 <p>Première visite sur MetropolisVOD ? <a href="signup.php">Inscrivez-vous</a></p>
             </form>

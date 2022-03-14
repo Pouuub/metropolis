@@ -6,6 +6,14 @@ $('.home-slider').slick({
     slidesToScroll: 3,
     responsive: [
       {
+        breakpoint: 1720,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 3,
+          infinite: true,
+        }
+      },
+      {
         breakpoint: 1490,
         settings: {
           slidesToShow: 3,
@@ -14,7 +22,7 @@ $('.home-slider').slick({
         }
       },
       {
-        breakpoint: 890,
+        breakpoint: 920,
         settings: {
           slidesToShow: 2,
           slidesToScroll: 2,
@@ -22,7 +30,7 @@ $('.home-slider').slick({
         }
       },
       {
-        breakpoint: 520,
+        breakpoint: 600,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,

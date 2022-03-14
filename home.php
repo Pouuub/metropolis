@@ -1,3 +1,19 @@
+<?php
+    session_start();
+    require_once 'assets/bd/config.php';
+    require_once 'assets/bd/bd.php';
+
+    if(!isset($_SESSION['user']))
+        header('Location:index.php');
+
+    include 'assets/includes/function.php';
+    /* foreach ($dataFilm as $row) {
+
+        echo "<br> ----- <br>";
+        echo $row["id_genre"]."<br>";
+        echo $row["titre_film"]."<br>";
+    } */
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -35,19 +51,21 @@
                         <li><a href="home.php">Accueil</a></li>
                         <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Genre<i class="material-icons right">arrow_drop_down</i></a></li>
                             <ul id="dropdown1" class="dropdown-content">
-                                <li><a href="#!">Genre 1</a></li>
+                                <li><a href="#SF">SF</a></li>
                                 <li class="divider"></li>
-                                <li><a href="#!">Genre 2</a></li>
+                                <li><a href="#Drame">Drame</a></li>
                                 <li class="divider"></li>
-                                <li><a href="#!">Genre 3</a></li>
+                                <li><a href="#Thriller">Thriller</a></li>
+                                <li class="divider"></li>
+                                <li><a href="#Animation">Animation</a></li>
                             </ul>
                         <li><input id="searchbar-home" type="text" name="search" placeholder="Trouvez un film.."></li>
-                        <li><a href="login.php" class="btn-small connexion-btn">Deconnexion</a></li>
+                        <li><a href="assets/bd/deconnexion.php" class="btn-small connexion-btn">Deconnexion</a></li>
                     </ul>
                 </div>
                 <ul class="sidenav" id="mobile-menu">
                     <li><a href="home.php">Accueil</a></li>
-                    <li><a href="login.php" class="btn-small connexion-btn">Deconnexion</a></li>
+                    <li><a href="assets/bd/deconnexion.php" class="btn-small connexion-btn">Deconnexion</a></li>
                 </ul>
             </div>
         </nav>
@@ -56,89 +74,140 @@
 <!-- caroussel -->
     <section id="home-carousel" data-aos="fade-right" data-aos-duration="500">
         <div class="carousel">
-        <h2>Top 10 du moment</h2>
-            <a class="carousel-item" href="pages.php"><img class="carousel-img" src="assets/img/dune-zendaya.jpeg"><p>Top 1</p></a>
-            <a class="carousel-item" href="#two!"><img class="carousel-img" src="assets/img/dune-jessica.jpeg"><p>Top 2</p></a>
-            <a class="carousel-item" href="#three!"><img class="carousel-img" src="assets/img/arcane.jpeg"><p>Top 3</p></a>
-            <a class="carousel-item" href="#four!"><img class="carousel-img" src="assets/img/dune-zendaya.jpeg"><p>Top 4</p></a>
-            <a class="carousel-item" href="#five!"><img class="carousel-img" src="assets/img/dune-zendaya.jpeg"><p>Top 5</p></a>
-            <a class="carousel-item" href="#five!"><img class="carousel-img" src="assets/img/dune-zendaya.jpeg"><p>Top 6</p></a>
-            <a class="carousel-item" href="#five!"><img class="carousel-img" src="assets/img/dune-zendaya.jpeg"><p>Top 7</p></a>
-            <a class="carousel-item" href="#five!"><img class="carousel-img" src="assets/img/dune-zendaya.jpeg"><p>Top 8</p></a>
-            <a class="carousel-item" href="#five!"><img class="carousel-img" src="assets/img/dune-zendaya.jpeg"><p>Top 9</p></a>
-            <a class="carousel-item" href="#five!"><img class="carousel-img" src="assets/img/dune-zendaya.jpeg"><p>Top 10</p></a>
+        <h2>Les plus appréciés de la critique</h2>
+        <?php
+            $requete=$bdd->query('SELECT * FROM film');
+                while($row = $requete->fetch(PDO::FETCH_ASSOC)){
+                    if ($row['note_film'] >= 95) {
+                        echo "<a class='carousel-item' href='pages.php?pages=".$row['id_film']."'><img class='carousel-img' src='assets/img/affiche/".$row['affiche_film']."'>" . $row['titre_film'] . "</a>";
+                    }
+                }
+        ?>
         </div>
     </section>
 
-
 <!-- sliders -->
-<section id="slider-home-section" data-aos="fade-left" data-aos-duration="500">
-    <h2 class="home-genre">Genre 1</h2>
-        <div class="home-slider">
-            <a href="pages.php" class="img-slider-home div1"><div class="hover-desc"><h6>Dune</h6>
-                <div class="hover-desc-button">
-                    <i class="fas fa-play"></i>
-                    <i class="fas fa-plus"></i>
-                    <i class="fas fa-thumbs-up"></i>
-                    <i class="fas fa-thumbs-down"></i>
-                    <i class="fas fa-chevron-down"></i>
-                </div>
-                <div class="hover-desc-info">
-                    <span class="hover-desc-date">2021</span>
-                    <span class="hover-desc-note">97%</span>
-                    <span class="hover-desc-age">+13</span>
-                    <span class="hover-desc-duree">2h 35m</span>
-                    <span>SF</span>
-                    <span>Aventure</span>
-                    <span></span>
-                </div>
-            </div></a>
-            <div class="img-slider-home div2"></div>
-            <div class="img-slider-home div3"></div>
-            <div class="img-slider-home div4"></div>
-            <div class="img-slider-home div5"></div>
-            <div class="img-slider-home div6"></div>
-            <div class="img-slider-home div7"></div>
-            <div class="img-slider-home div8"></div>
-            <div class="img-slider-home div9"></div>
-            <div class="img-slider-home div10"></div>
-            <div class="img-slider-home div11"></div>
-            <div class="img-slider-home div12"></div>
-        </div>
-
 <section id="slider-home-section" data-aos="fade-right" data-aos-duration="500">
-    <h2 class="home-genre">Genre 2</h2>
+    <h2 class="home-genre" id="SF">SF</h2>
         <div class="home-slider">
-            <div class="img-slider-home div1"></div>
-            <div class="img-slider-home div2"></div>
-            <div class="img-slider-home div3"></div>
-            <div class="img-slider-home div4"></div>
-            <div class="img-slider-home div5"></div>
-            <div class="img-slider-home div6"></div>
-            <div class="img-slider-home div7"></div>
-            <div class="img-slider-home div8"></div>
-            <div class="img-slider-home div9"></div>
-            <div class="img-slider-home div10"></div>
-            <div class="img-slider-home div11"></div>
-            <div class="img-slider-home div12"></div>
+            <?php
+                foreach ($dataFilm as $row) { 
+                    if ($row['id_genre'] == 1) {?>
+                                <a href="pages.php?pages=<?php echo $row['id_film']?>"class='img-slider-home' style='background: url(assets/img/affiche/<?php echo $row['affiche_film']?>) center no-repeat; background-size: cover;'>
+
+
+                                <div class="hover-desc"><h6><?php echo $row['titre_film']?></h6>
+                                    <div class="hover-desc-button">
+                                        <i class="fas fa-play"></i>
+                                        <i class="fas fa-plus"></i>
+                                        <i class="fas fa-thumbs-up"></i>
+                                        <i class="fas fa-thumbs-down"></i>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    <div class="hover-desc-info">
+                                        <span class="hover-desc-date"><?php echo $row['date_film']?></span>
+                                        <span class="hover-desc-note"><?php echo $row['note_film']?>%</span>
+                                        <span class="hover-desc-age">+<?php echo $row['classification_film']?></span>
+                                        <span class="hover-desc-duree"><?php echo DureeFilm($row['duree_film'])?></span>
+                                        <span><?php echo ($row['genre_nom']);?></span>
+                                    </div>
+                                </div></a>
+                        
+            <?php  }}?>
+
         </div>
 </section>
 
-<section id="slider-home-section" data-aos="fade-left" data-aos-duration="500">
-    <h2 class="home-genre">Genre 3</h2>
+<section id="slider-home-section" data-aos="fade-right" data-aos-duration="500">
+    <h2 class="home-genre" id="Drame">Drame</h2>
         <div class="home-slider">
-            <div class="img-slider-home div1"></div>
-            <div class="img-slider-home div2"></div>
-            <div class="img-slider-home div3"></div>
-            <div class="img-slider-home div4"></div>
-            <div class="img-slider-home div5"></div>
-            <div class="img-slider-home div6"></div>
-            <div class="img-slider-home div7"></div>
-            <div class="img-slider-home div8"></div>
-            <div class="img-slider-home div9"></div>
-            <div class="img-slider-home div10"></div>
-            <div class="img-slider-home div11"></div>
-            <div class="img-slider-home div12"></div>
+            <?php
+                foreach ($dataFilm as $row) { 
+                    if ($row['id_genre'] == 2) {?>
+                                <a href="pages.php?pages=<?php echo $row['id_film']?>" class='img-slider-home' style='background: url(assets/img/affiche/<?php echo $row['affiche_film']?>) center no-repeat; background-size: cover;'>
+
+
+                                <div class="hover-desc"><h6><?php echo $row['titre_film']?></h6>
+                                    <div class="hover-desc-button">
+                                        <i class="fas fa-play"></i>
+                                        <i class="fas fa-plus"></i>
+                                        <i class="fas fa-thumbs-up"></i>
+                                        <i class="fas fa-thumbs-down"></i>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    <div class="hover-desc-info">
+                                        <span class="hover-desc-date"><?php echo $row['date_film']?></span>
+                                        <span class="hover-desc-note"><?php echo $row['note_film']?>%</span>
+                                        <span class="hover-desc-age">+<?php echo $row['classification_film']?></span>
+                                        <span class="hover-desc-duree"><?php echo DureeFilm($row['duree_film'])?></span>
+                                        <span><?php echo ($row['genre_nom']);?></span>
+                                    </div>
+                                </div></a>
+                        
+            <?php  }}?>
+
+        </div>
+</section>
+
+<section id="slider-home-section" data-aos="fade-right" data-aos-duration="500">
+    <h2 class="home-genre" id="Thriller">Thriller</h2>
+        <div class="home-slider">
+            <?php
+                foreach ($dataFilm as $row) { 
+                    if ($row['id_genre'] == 3) {?>
+                                <a href="pages.php?pages=<?php echo $row['id_film']?>" class='img-slider-home' style='background: url(assets/img/affiche/<?php echo $row['affiche_film']?>) center no-repeat; background-size: cover;'>
+
+
+                                <div href="pages.php?pages=<?php echo $row['id_film']?>" class="hover-desc"><h6><?php echo $row['titre_film']?></h6>
+                                    <div class="hover-desc-button">
+                                        <i class="fas fa-play"></i>
+                                        <i class="fas fa-plus"></i>
+                                        <i class="fas fa-thumbs-up"></i>
+                                        <i class="fas fa-thumbs-down"></i>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    <div class="hover-desc-info">
+                                        <span class="hover-desc-date"><?php echo $row['date_film']?></span>
+                                        <span class="hover-desc-note"><?php echo $row['note_film']?>%</span>
+                                        <span class="hover-desc-age">+<?php echo $row['classification_film']?></span>
+                                        <span class="hover-desc-duree"><?php echo DureeFilm($row['duree_film'])?></span>
+                                        <span><?php echo ($row['genre_nom']);?></span>
+                                    </div>
+                                </div></a>
+                        
+            <?php  }}?>
+
+        </div>
+</section>
+
+<section id="slider-home-section" data-aos="fade-right" data-aos-duration="500">
+    <h2 class="home-genre">Animation</h2>
+        <div class="home-slider">
+            <?php
+                foreach ($dataFilm as $row) { 
+                    if ($row['id_genre'] == 4) {?>
+                                <a href="pages.php?pages=<?php echo $row['id_film']?>" class='img-slider-home' style='background: url(assets/img/affiche/<?php echo $row['affiche_film']?>) center no-repeat; background-size: cover;'>
+
+
+                                <div class="hover-desc"><h6><?php echo $row['titre_film']?></h6>
+                                    <div class="hover-desc-button">
+                                        <i class="fas fa-play"></i>
+                                        <i class="fas fa-plus"></i>
+                                        <i class="fas fa-thumbs-up"></i>
+                                        <i class="fas fa-thumbs-down"></i>
+                                        <i class="fas fa-chevron-down"></i>
+                                    </div>
+                                    <div class="hover-desc-info">
+                                        <span class="hover-desc-date"><?php echo $row['date_film']?></span>
+                                        <span class="hover-desc-note"><?php echo $row['note_film']?>%</span>
+                                        <span class="hover-desc-age">+<?php echo $row['classification_film']?></span>
+                                        <span class="hover-desc-duree"><?php echo DureeFilm($row['duree_film'])?></span>
+                                        <span><?php echo ($row['genre_nom']);?></span>
+                                    </div>
+                                </div></a>
+                        
+            <?php  }}?>
+
         </div>
 </section>
 

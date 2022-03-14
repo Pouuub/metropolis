@@ -29,12 +29,58 @@
     </header>
 
     <section id="sign-section">
+        <?php
+            if(isset($_GET['reg_err']))
+            {
+                $err = htmlspecialchars($_GET['reg_err']);
+
+                switch($err)
+                {
+                    case 'password':
+                        ?>
+                        <div class="erreur-log" data-aos="zoom-in-up">
+                            <p>Erreur mot de passe différent</p>
+                        </div>
+                    <?php
+                    break;
+                    case 'email':
+                        ?>
+                        <div class="erreur-log" data-aos="zoom-in-up">
+                            <p>Erreur email non valide</p>
+                        </div>
+                    <?php
+                    break;
+                    case 'email_length':
+                        ?>
+                        <div class="erreur-log" data-aos="zoom-in-up">
+                            <p>Erreur email trop long</p>
+                        </div>
+                    <?php
+                    break;
+                    case 'pseudo_length':
+                        ?>
+                        <div class="erreur-log" data-aos="zoom-in-up">
+                            <p>Erreur pseudo trop long</p>
+                        </div>
+                    <?php
+                    break;
+                    case 'already':
+                        ?>
+                        <div class="erreur-log" data-aos="zoom-in-up">
+                            <p>Erreur compte déjà existant</p>
+                        </div>
+                    <?php
+                }
+            }
+        ?>
         <div id="sign-box">
             <h2>Inscription</h2>
-            <form action="#" id="sign-form">
-                <input type="text" id="email" name="email" placeholder="Email" maxlength="100" required>
-                <input type="text" id="password" name="password" placeholder="Mot de passe" maxlength="100" required>
-                <input type=submit id="submit-log"name="connexion" value="S'inscrire">
+            <form action="assets/bd/inscription_traitement.php" method="post" id="sign-form">
+                <input type="text" id="email" name="pseudo" placeholder="Pseudo" maxlength="100" required>
+                <input type="email" id="email" name="email" placeholder="Email" maxlength="100" required>
+                <input type="password" id="password" name="password" placeholder="Mot de passe" maxlength="100" required>
+                <input type="password" id="password" name="password_retype" placeholder="Validez le mot de passe" maxlength="100" required>
+                <input type="submit" id="submit-log" name="connexion" value="S'inscrire">
                 <p>Vous avez déjà un compte ? <a href="login.php">Se connecter</a></p>
             </form>
         </div>

@@ -1,3 +1,45 @@
+<?php
+    session_start();
+    if(!isset($_SESSION['user'])) {
+        header('Location:index.php');
+    }
+
+    require_once 'assets/bd/config.php';
+    require_once 'assets/bd/bd.php';
+    include 'assets/includes/function.php';
+
+    $FilmDeCettePage = null;
+    
+    if(isset($_GET['pages'])){
+
+        $getFilm = htmlspecialchars($_GET['pages']);
+        foreach($dataFilm as $row){
+            if ($row['id_film']==$getFilm) {
+                $FilmDeCettePage = $row;
+            }
+        }
+
+        if ($FilmDeCettePage == null){
+            header("Location:home.php");
+        }
+
+    }else{
+        header("Location:home.php");
+    }
+    $acteur= ('SELECT * FROM film
+        INNER JOIN jouer ON film.id_film = jouer.id_film
+        INNER JOIN acteur ON acteur.id_acteur = jouer.id_acteur');
+
+        $requeteActeurFilm = $bdd->query($acteur);
+        $dataActeur = $requeteActeurFilm->fetchAll();
+
+    $realisateur= ('SELECT * FROM film
+        INNER JOIN realiser ON film.id_film = realiser.id_film
+        INNER JOIN realisteur ON realisteur.id_realisateur = realiser.id_realisateur');
+
+        $requeteRealisateurFilm = $bdd->query($realisateur);
+        $dataRealisateur = $requeteRealisateurFilm->fetchAll();
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -17,7 +59,7 @@
   <!-- AOS -->
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
-<body id="home-background">
+<body id="home-background" style="color: white;">
 
 <!-- navbar -->
     <header>
@@ -30,40 +72,63 @@
                     </a>
                     <ul id="nav-mobile" class="right hide-on-med-and-down nav-links-home">
                         <li><a href="home.php">Accueil</a></li>
-                        <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">Genre<i class="material-icons right">arrow_drop_down</i></a></li>
-                            <ul id="dropdown1" class="dropdown-content">
-                                <li><a href="#!">Genre 1</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#!">Genre 2</a></li>
-                                <li class="divider"></li>
-                                <li><a href="#!">Genre 3</a></li>
-                            </ul>
                         <li><input id="searchbar-home" type="text" name="search" placeholder="Trouvez un film.."></li>
-                        <li><a href="login.php" class="btn-small connexion-btn">Deconnexion</a></li>
+                        <li><a href="assets/bd/deconnexion.php" class="btn-small connexion-btn">Deconnexion</a></li>
                     </ul>
                 </div>
                 <ul class="sidenav" id="mobile-menu">
                     <li><a href="home.php">Accueil</a></li>
-                    <li><a href="login.php" class="btn-small connexion-btn">Deconnexion</a></li>
+                    <li><a href="assets/bd/deconnexion.php" class="btn-small connexion-btn">Deconnexion</a></li>
                 </ul>
             </div>
         </nav>
     </header>
 
     <!-- bannière -->
-    <div id="banniere" data-aos="fade-right">
+    <div id="banniere" data-aos="fade-right" style='background: url(assets/img/affiche/<?php echo $FilmDeCettePage['affiche_film']?>) center no-repeat; background-size: cover;'>
 
     </div>
 
     <div id="apropos-film" data-aos="zoom-in-up">
-        <div id="resume-film"><h2>Résumé</h2><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima praesentium ad magni natus repudiandae pariatur minus iure, dolorem, dolor blanditiis nobis rerum facere. Illum, molestiae esse, quasi eveniet nam rerum hic corrupti blanditiis unde, animi eum suscipit enim maiores officiis?</p></div>
-        <div id="info-film"><h2>Info</h2><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima praesentium ad magni natus repudiandae pariatur minus iure, dolorem, dolor blanditiis nobis rerum facere. Illum, molestiae esse, quasi eveniet nam rerum hic corrupti blanditiis unde, animi eum suscipit enim maiores officiis?</p></div>
-        <div id="equipe-film"><h2>Équipe du film</h2><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima praesentium ad magni natus repudiandae pariatur minus iure, dolorem, dolor blanditiis nobis rerum facere. Illum, molestiae esse, quasi eveniet nam rerum hic corrupti blanditiis unde, animi eum suscipit enim maiores officiis?</p></div>
+        <div id="resume-film"><h2>Résumé</h2><p><?php echo $FilmDeCettePage['synopsis_film']?></p></div>
+        <div id="info-film"><h2>Info</h2>
+            <p> Titre : <?php echo $FilmDeCettePage['titre_film']?><br></p>
+            <p> Date : <?php echo $FilmDeCettePage['date_film']?><br></p>
+            <p> Durée : <?php echo DureeFilm($FilmDeCettePage['duree_film'])?><br></p>
+            <p> Note : <?php echo $FilmDeCettePage['note_film']?>%<br></p>
+            <p> Classification : +<?php echo $FilmDeCettePage['classification_film']?><br></p>
+        </div>
+        <div id="equipe-film"><h2>Équipe du film</h2>
+        <h5>Réalisateur:</h5>
+            <p>
+                <?php
+                    foreach ($dataRealisateur as $row){
+                        if($FilmDeCettePage['id_film'] == $row['id_film']) {?>
+                        <a href="realisateur.php?realisateur=<?php echo $row['id_realisateur']?>"><?php
+                        
+                            echo $row['prenom_realisateur'].' ';
+                            echo $row['nom_realisateur'].'<br>';
+                        }
+                    }
+                ?>
+            </a></p>
+        <h5>Acteurs Principaux:</h5>
+            <p><?php
+                    foreach ($dataActeur as $row){
+                        if($FilmDeCettePage['id_film'] == $row['id_film']) {?>
+                            <a href="acteur.php?acteur=<?php echo $row['id_acteur']?>"><?php
+                        
+                            echo $row['prenom_acteur'].' ';
+                            echo $row['nom_acteur'].'<br>';
+                        }
+                    }
+                ?>
+            </a></p></div>
     </div>
 
     <div id="BA-film">
-        <h2 data-aos="fade-right">Dune</h2>
-        <iframe src="https://fr.vid.web.acsta.net/nmedia/33/21/07/22/15/19593287_hd_013.mp4" frameborder="0" allow='autoplay'></iframe>
+        <h2 data-aos="fade-right"><?php echo $FilmDeCettePage['titre_film']?></h2>
+        <iframe width="1424" height="548" src="https://www.youtube.com/watch?v=gHt8tCHbB2M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
 
     <footer>
